@@ -1,0 +1,125 @@
+{% extends 'back/master.html' %}
+{% load static %}
+
+
+{% block mainblock %}
+
+<!-- Datatables Header -->
+<div class="content-header">
+    <div class="header-section">
+        <h1>
+            <i class="fa fa-table"></i>Groups<br><small>You can add , delete and edit the data</small>
+        </h1>
+    </div>
+</div>
+<ul class="breadcrumb breadcrumb-top">
+    <li>News</li>
+    <li><a href="">List</a></li>
+</ul>
+<!-- END Datatables Header -->
+
+
+ 
+<div class="row">
+    <div class="col-md-12">
+        <!-- Basic Form Elements Block -->
+        <div class="block">
+            <!-- Basic Form Elements Title -->
+            <div class="block-title">
+                <div class="block-options pull-right">
+                    <a href="javascript:void(0)" class="btn btn-alt btn-sm btn-default toggle-bordered enable-tooltip" data-toggle="button" title="Toggles .form-bordered class">No Borders</a>
+                </div>
+                <h2><strong>Add</strong> Groups</h2>
+            </div>
+            <!-- END Form Elements Title -->
+
+            <!-- Basic Form Elements Content -->
+            <form action="{% url 'manager_group_add' %}" method="post" enctype="multipart/form-data" class="form-horizontal form-bordered" onsubmit="return true;">
+                {% csrf_token %} 
+                <div class="form-group">
+                    <div class="col-md-6">
+                        <input type="text" id="name" name="name" class="form-control" placeholder="Group Title"  required>
+                    </div>
+                    <div class="col-md-6">
+                        <button type="submit" class="btn btn-sm btn-primary"><i class="fa fa-angle-right"></i> Submit</button>
+                    </div>
+                </div>
+
+  
+
+                
+
+                
+            </form>
+            <!-- END Basic Form Elements Content -->
+        </div>
+        <!-- END Basic Form Elements Block -->
+    </div>
+</div>
+
+<!-- Datatables Content -->
+<div class="block full">
+    <div class="block-title">
+        <h2><strong>Groups</strong> </h2>
+    </div>
+    
+    <div class="table-responsive">
+        <table id="example-datatable" class="table table-vcenter table-condensed table-bordered">
+            <thead>
+                <tr>
+                   
+                    <th>Title</th>
+                   
+                    <th class="text-center">Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+
+                {% for cc in group %}
+
+                <tr>
+                   
+                    <td>{{cc.name}}</td>
+                
+                  
+                    <td class="text-center">
+                        <div class="btn-group">
+                            <a href="#" data-toggle="tooltip" title="Edit" class="btn btn-xs btn-default"><i class="fa fa-pencil"></i> Edit </a>
+                            <a href="{% url 'manager_group_del' name=cc.name %}" data-toggle="tooltip" title="Delete" class="btn btn-xs btn-danger"><i class="fa fa-times"></i> Delete</a>
+                        </div>
+                    </td>
+                </tr>
+
+                {% endfor %}
+               
+            </tbody>
+        </table>
+        <br>
+        Page {{news.number}} From {{news.paginator.num_pages}}
+        <br><br>
+ 
+        {% if news.has_previous %}
+        <a href="? page={{news.previous_page_number}}" data-toggle="tooltip" title="Previous" class="btn btn-xs btn-default"><i ></i> Previous </a> 
+        {% endif %}
+
+        {% if news.has_next %}
+        <a href="?page={{news.next_page_number}}" data-toggle="tooltip" title="Next" class="btn btn-xs btn-default"><i ></i> Next </a>
+        {% endif %}
+
+    </div>
+</div> 
+<!-- END Datatables Content -->
+
+
+{% endblock %}
+
+{% block footerblock %}
+
+
+
+<!-- Load and execute javascript code used only in this page -->
+<script src="{% static 'back/js/pages/tablesDatatables.js' %}"></script>
+<script>$(function(){ TablesDatatables.init(); });</script>
+
+
+{% endblock %}
